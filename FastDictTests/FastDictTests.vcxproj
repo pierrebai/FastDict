@@ -26,11 +26,15 @@
   <ItemGroup>
     <ClCompile Include="dict_tests.cpp" />
     <ClCompile Include="element_tests.cpp" />
+    <ClCompile Include="fast_dict_tests.cpp" />
+    <ClCompile Include="fast_element_tests.cpp" />
     <ClCompile Include="name_tests.cpp" />
+    <ClCompile Include="rock.cpp" />
     <ClCompile Include="stream_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helpers.h" />
+    <ClInclude Include="rock.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

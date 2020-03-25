@@ -1,0 +1,31 @@
+         d1[voc::rock] = rand();
+00007FFC401E10E3  call        qword ptr [__imp_rand (07FFC401EB350h)]  
+00007FFC401E10E9  movsxd      rcx,eax  
+00007FFC401E10EC  mov         qword ptr [rsp+38h],rcx  
+         use_rock(d1);
+00007FFC401E10F1  lea         rcx,[d1]  
+00007FFC401E10F6  call        dak::use_rock (07FFC401E56B0h)  
+
+         std::wcout << d1[voc::rock];
+00007FFC401E10FB  lea         rdx,[rsp+38h]  
+00007FFC401E1100  mov         rcx,qword ptr [__imp_std::wcout (07FFC401EB180h)]  
+00007FFC401E1107  call        dak::operator<< (07FFC401E6080h)  
+
+         d1[voc::rock] += rand();
+00007FFC401E110C  call        qword ptr [__imp_rand (07FFC401EB350h)]  
+00007FFC401E1112  add         eax,dword ptr [rsp+38h]  
+00007FFC401E1116  movsxd      rcx,eax  
+00007FFC401E1119  mov         qword ptr [rsp+38h],rcx  
+         use_rock(d1);
+00007FFC401E111E  lea         rcx,[d1]  
+00007FFC401E1123  call        dak::use_rock (07FFC401E56B0h)  
+
+         std::wcout << d1[voc::rock];
+00007FFC401E1128  lea         rdx,[rsp+38h]  
+00007FFC401E112D  mov         rcx,qword ptr [__imp_std::wcout (07FFC401EB180h)]  
+00007FFC401E1134  call        dak::operator<< (07FFC401E6080h)  
+
+         use_rock(d1);
+00007FFC401E1139  lea         rcx,[d1]  
+00007FFC401E113E  call        dak::use_rock (07FFC401E56B0h)  
+

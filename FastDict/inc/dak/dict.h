@@ -64,6 +64,10 @@ namespace dak
 
    protected:
       elements _elements;
+
+      // Sub-classes call this during construction
+      // to add the permanent proxy elements.
+      void add_permanent_proxy(const name& n, element &);
    };
 
    DAK_ELEMENT_OPERATOR(+, dict, element);

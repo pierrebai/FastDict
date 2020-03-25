@@ -1,6 +1,6 @@
 // File: dict.cpp
 //
-// Dak Copyright © 2012-2018. All Rights Reserved.
+// Dak Copyright © 2012-2020. All Rights Reserved.
 
 #include "dak/dict.h"
 
@@ -23,7 +23,10 @@ namespace dak
          const const_iterator end = _elements.end();
          for (const_iterator pos = _elements.begin(); pos != end;)
          {
-            pos = _elements.erase(pos);
+            if (pos->second.is_permanent())
+               ++pos;
+            else
+               pos = _elements.erase(pos);
          }
       }
       {
@@ -55,6 +58,9 @@ namespace dak
    {
       iterator pos = _elements.find(n);
       if (pos == _elements.end())
+         return false;
+
+      if (pos->second.is_permanent())
          return false;
 
       _elements.erase(pos);
@@ -121,5 +127,12 @@ namespace dak
    bool dict::operator != (const dict& d) const
    {
       return !((*this) == d);
+   }
+
+
+   void dict::add_permanent_proxy(const name& n, element & e)
+   {
+      _elements[n].make_proxy(e);
+      _elements[n].make_permanent();
    }
 }

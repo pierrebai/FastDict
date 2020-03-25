@@ -23,7 +23,41 @@ namespace dak
 
    //////////////////////////////////////////////////////////////////////////
    //
-   // Element in dictionaries. Can represent all data
+   // Fixed elements are faster but cannot change type.
+   //
+   // They are implemented as a sub-classes in fast_element.h.
+
+   enum class fixedtype : byte
+   {
+      unfixed, fixed
+   };
+
+   //////////////////////////////////////////////////////////////////////////
+   //
+   // Proxy element actually refer to another element.
+   // The other element lifetime must be longer than the proxy element.
+   //
+   // They are used by fast dict to enable struct-like access speed.
+
+   enum class proxy : byte
+   {
+      direct, proxy
+   };
+
+   //////////////////////////////////////////////////////////////////////////
+   //
+   // Permanent elements cannot be erased.
+   //
+   // They are used by fast dict to enable struct-like access speed.
+
+   enum class permanent : byte
+   {
+      transient, permanent
+   };
+
+   //////////////////////////////////////////////////////////////////////////
+   //
+   // Element dictionaries. Can represent all data
    // types. Simple ones are inlined, other allocated on the heap.
    //
    // All types are always copied when assigned to, so beware of assigning
@@ -42,7 +76,7 @@ namespace dak
    // To support access to elements containg dict, the element
    // provides the [] operator to access the sub-elements of the container.
    // Again, the element will be automatically converted, so if it was not
-   // an array of a dict, its previous content will be lost.
+   // a dict, its previous content will be lost.
 
    struct element
    {
@@ -121,6 +155,11 @@ namespace dak
       // Current type of data contained in the element.
       datatype type() const;
 
+      // Check if the element is a proxy, permanent or fixed.
+      bool is_proxy() const { return _proxy == proxy::proxy; }
+      bool is_permanent() const { return _permanent == permanent::permanent; }
+      bool is_fixed() const { return _fixed == fixedtype::fixed; }
+
       // All integer-like types are equivalent, so you can read a boolean
       // from an integer. Same for double-like types, float and double.
       bool compatible(datatype aType) const;
@@ -144,6 +183,14 @@ namespace dak
       bool operator != (const element&) const;
 
    protected:
+      element(datatype);
+      element(datatype, int64);
+      element(datatype, double);
+
+      // Used by fast element sub-classes. See fast_element.h.
+      element& make_proxy(element &);
+      element& make_permanent();
+
       union
       {
          int64          _i;
@@ -155,6 +202,9 @@ namespace dak
          name           _n;
       };
       datatype _type = datatype::unknown;
+      const fixedtype _fixed = fixedtype::unfixed;
+      proxy _proxy = proxy::direct;
+      permanent _permanent = permanent::transient;
 
       friend struct dict;
    };

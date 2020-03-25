@@ -36,6 +36,9 @@
     <ClInclude Include="inc\dak\voc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\dak\fast_element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dict.cpp">

@@ -42,8 +42,14 @@ namespace dak
 
    struct dict;
    struct element;
+   struct eint64;
+   struct edouble;
+   struct edict;
+   struct ename;
+   struct etext;
    struct name;
    struct no_copy;
+   struct no_move;
 }
 
 #endif /* DAK_TYPES_H */

@@ -1,6 +1,6 @@
 // File: stream.cpp
 //
-// Dak Copyright © 2012-2018. All Rights Reserved.
+// Dak Copyright © 2012-2020. All Rights Reserved.
 
 #include "dak/stream.h"
 #include "dak/types.h"

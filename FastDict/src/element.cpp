@@ -1,6 +1,6 @@
 // File: element.cpp
 //
-// Dak Copyright © 2012-2018. All Rights Reserved.
+// Dak Copyright © 2012-2020. All Rights Reserved.
 
 #include "dak/element.h"
 #include "dak/dict.h"
@@ -14,6 +14,9 @@ namespace dak
 
    bool element::reset(datatype aType)
    {
+      if (_proxy == proxy::proxy)
+         return _e->reset(aType);
+
       switch(_type)
       {
          default:
@@ -26,7 +29,8 @@ namespace dak
          case datatype::text:  delete _t; _t = 0; break;
       }
 
-      _type = aType;
+      if (_fixed == fixedtype::unfixed)
+         _type = aType;
 
       switch(_type)
       {
@@ -45,6 +49,9 @@ namespace dak
 
    bool element::compatible(datatype aType) const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->compatible(aType);
+
       switch(_type)
       {
          default:
@@ -61,6 +68,9 @@ namespace dak
 
    bool element::ensure(datatype aType)
    {
+      if (_proxy == proxy::proxy)
+         return _e->ensure(aType);
+
       if (compatible(aType))
          return true;
 
@@ -105,6 +115,9 @@ namespace dak
 
    bool element::verify(datatype aType)
    {
+      if (_proxy == proxy::proxy)
+         return _e->verify(aType);
+
       if (compatible(aType))
          return true;
 
@@ -204,6 +217,22 @@ namespace dak
       *this = n;
    }
 
+   element::element(datatype type)
+   : _i(0), _type(type), _fixed(fixedtype::fixed)
+   {
+      reset(type);
+   }
+
+   element::element(datatype type, int64 i)
+   : _i(i), _type(type), _fixed(fixedtype::fixed)
+   {
+   }
+
+   element::element(datatype type, double d)
+   : _r(d), _type(type), _fixed(fixedtype::fixed)
+   {
+   }
+
    element::~element()
    {
       reset();
@@ -211,6 +240,9 @@ namespace dak
 
    element& element::operator =(const element & anOther)
    {
+      if (anOther._proxy == proxy::proxy)
+         return (*this = *anOther._e);
+
       switch(anOther._type)
       {
          default:
@@ -243,6 +275,9 @@ namespace dak
 
    element& element::operator =(strptr sometext)
    {
+      if (_proxy == proxy::proxy)
+         return (*_e = sometext);
+
       if (reset(datatype::text))
          *_t = sometext ? sometext : L"";
 
@@ -251,6 +286,9 @@ namespace dak
 
    element& element::operator =(bool aValue)
    {
+      if (_proxy == proxy::proxy)
+         return (*_e = aValue);
+
       if (reset(datatype::boolean))
          _i = aValue;
       else if (compatible(datatype::real))
@@ -271,6 +309,9 @@ namespace dak
 
    element& element::operator =(int64 aValue)
    {
+      if (_proxy == proxy::proxy)
+         return (*_e = aValue);
+
       if (reset(datatype::integer))
          _i = aValue;
       else if (compatible(datatype::real))
@@ -301,6 +342,9 @@ namespace dak
 
    element& element::operator =(double aValue)
    {
+      if (_proxy == proxy::proxy)
+         return (*_e = aValue);
+
       if (reset(datatype::real))
          _r = aValue;
       else if (compatible(datatype::integer))
@@ -311,6 +355,9 @@ namespace dak
 
    element& element::operator =(const dict & aDict)
    {
+      if (_proxy == proxy::proxy)
+         return (*_e = aDict);
+
       if (reset(datatype::dict))
          *_d = aDict;
 
@@ -319,6 +366,9 @@ namespace dak
 
    element& element::operator =(const name& aValue)
    {
+      if (_proxy == proxy::proxy)
+         return (*_e = aValue);
+
       if (reset(datatype::name))
          _n = aValue;
 
@@ -327,6 +377,9 @@ namespace dak
 
    element::operator char() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator char();
+
       if (compatible(datatype::integer))
          return (char)_i;
 
@@ -338,6 +391,9 @@ namespace dak
 
    element::operator wchar_t() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator wchar_t();
+
       if (compatible(datatype::integer))
          return (wchar_t)_i;
 
@@ -349,6 +405,9 @@ namespace dak
 
    element::operator text() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator text();
+
       if (compatible(datatype::text))
          return *_t;
 
@@ -357,6 +416,9 @@ namespace dak
 
    element::operator strptr() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator strptr();
+
       if (compatible(datatype::text))
          return _t->c_str();
 
@@ -365,6 +427,9 @@ namespace dak
 
    element::operator word() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator word();
+
       if (compatible(datatype::integer))
          return (word)_i;
 
@@ -376,6 +441,9 @@ namespace dak
 
    element::operator dword() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator dword();
+
       if (compatible(datatype::integer))
          return (dword)_i;
 
@@ -387,6 +455,9 @@ namespace dak
 
    element::operator bool() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator bool();
+
       switch (_type)
       {
          default:
@@ -402,6 +473,9 @@ namespace dak
 
    element::operator int16() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator int16();
+
       if (compatible(datatype::integer))
          return (int16)_i;
 
@@ -413,6 +487,9 @@ namespace dak
 
    element::operator int32() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator int32();
+
       if (compatible(datatype::integer))
          return (int32)_i;
 
@@ -424,6 +501,9 @@ namespace dak
 
    element::operator qword() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator qword();
+
       if (compatible(datatype::integer))
          return (qword)_i;
 
@@ -435,6 +515,9 @@ namespace dak
 
    element::operator int64() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator int64();
+
       if (compatible(datatype::integer))
          return (int64)_i;
 
@@ -446,6 +529,9 @@ namespace dak
 
    element::operator float() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator float();
+
       if (compatible(datatype::real))
          return (float)_r;
 
@@ -457,6 +543,9 @@ namespace dak
 
    element::operator double() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator double();
+
       if (compatible(datatype::real))
          return _r;
 
@@ -468,6 +557,9 @@ namespace dak
 
    element::operator const dict &() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator const dict &();
+
       if (compatible(datatype::dict))
          return *_d;
 
@@ -476,6 +568,9 @@ namespace dak
 
    element::operator name() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator name();
+
       if (compatible(datatype::name))
          return _n;
 
@@ -485,6 +580,9 @@ namespace dak
    // Dict conversion + immediate dict op.
    void element::append(const dict & d)
    {
+      if (_proxy == proxy::proxy)
+         return _e->append(d);
+
       if (!ensure(datatype::dict))
          return;
 
@@ -493,6 +591,9 @@ namespace dak
 
    bool element::erase(const name& n)
    {
+      if (_proxy == proxy::proxy)
+         return _e->erase(n);
+
       if (!ensure(datatype::dict))
          return false;
 
@@ -501,6 +602,9 @@ namespace dak
 
    bool element::contains(const name& n) const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->contains(n);
+
       if (!compatible(datatype::dict))
          return false;
 
@@ -509,6 +613,9 @@ namespace dak
 
    element & element::operator [](const name& n)
    {
+      if (_proxy == proxy::proxy)
+         return _e->operator [](n);
+
       if (!ensure(datatype::dict))
          throw std::exception("bad element access on fixed element");
 
@@ -517,6 +624,9 @@ namespace dak
 
    const element & element::operator [](const name& n) const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator [](n);
+
       if (!compatible(datatype::dict))
          return empty;
 
@@ -525,6 +635,9 @@ namespace dak
 
    index element::size() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->size();
+
       switch(_type)
       {
          default:
@@ -540,11 +653,20 @@ namespace dak
 
    datatype element::type() const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->type();
+
       return _type;
    }
 
    bool element::operator == (const element& e) const
    {
+      if (_proxy == proxy::proxy)
+         return _ce->operator ==(e);
+
+      if (e._proxy == proxy::proxy)
+         return *this == *e._ce;
+
       if (_type != e._type)
          return false;
 
@@ -565,5 +687,24 @@ namespace dak
    {
       return !((*this) == e);
    }
+
+   element& element::make_proxy(element & anOther)
+   {
+      if (!reset(datatype::unknown))
+         return *this;
+
+      _e = &anOther;
+      _proxy = proxy::proxy;
+
+      return *this;
+   }
+
+   element& element::make_permanent()
+   {
+      _permanent = permanent::permanent;
+
+      return *this;
+   }
+
 }
 

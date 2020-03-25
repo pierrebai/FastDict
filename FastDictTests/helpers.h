@@ -1,6 +1,6 @@
 // File: helpers.h
 //
-// Dak Copyright © 2012-2019. All Rights Reserved.
+// Dak Copyright © 2012-2020. All Rights Reserved.
 
 #pragma once
 
@@ -13,6 +13,7 @@
 #include "dak/dict.h"
 #include "dak/voc.h"
 #include "dak/stream.h"
+#include "dak/fast_element.h"
 
 namespace Microsoft { namespace VisualStudio { namespace CppUnitTestFramework
 {
@@ -34,6 +35,31 @@ namespace Microsoft { namespace VisualStudio { namespace CppUnitTestFramework
    }
 
    template<> inline std::wstring ToString<dak::element>(const dak::element& e)
+   {
+      RETURN_WIDE_STRING(e);
+   }
+
+   template<> inline std::wstring ToString<dak::eint64>(const dak::eint64& e)
+   {
+      RETURN_WIDE_STRING(e);
+   }
+
+   template<> inline std::wstring ToString<dak::edouble>(const dak::edouble& e)
+   {
+      RETURN_WIDE_STRING(e);
+   }
+
+   template<> inline std::wstring ToString<dak::edict>(const dak::edict& e)
+   {
+      RETURN_WIDE_STRING(e);
+   }
+
+   template<> inline std::wstring ToString<dak::ename>(const dak::ename& e)
+   {
+      RETURN_WIDE_STRING(e);
+   }
+
+   template<> inline std::wstring ToString<dak::etext>(const dak::etext& e)
    {
       RETURN_WIDE_STRING(e);
    }

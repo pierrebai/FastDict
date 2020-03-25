@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="inc\dak\dict.h" />
     <ClInclude Include="inc\dak\element.h" />
+    <ClInclude Include="inc\dak\fast_element.h" />
     <ClInclude Include="inc\dak\name.h" />
     <ClInclude Include="inc\dak\stream.h" />
     <ClInclude Include="inc\dak\types.h" />
