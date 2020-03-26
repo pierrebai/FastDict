@@ -1,0 +1,31 @@
+        d1[voc::rock] = rand();
+call        qword ptr [rand]  
+movsxd      rcx,eax  
+mov         qword ptr [rsp+38h],rcx  
+        use_rock(d1);
+lea         rcx,[d1]  
+call        dak::use_rock
+
+        std::wcout << d1[voc::rock];
+lea         rdx,[rsp+38h]  
+mov         rcx,qword ptr [std::wcout]  
+call        dak::operator<<
+
+        d1[voc::rock] += rand();
+call        qword ptr [rand]  
+add         eax,dword ptr [rsp+38h]  
+movsxd      rcx,eax  
+mov         qword ptr [rsp+38h],rcx  
+        use_rock(d1);
+lea         rcx,[d1]  
+call        dak::use_rock
+
+        std::wcout << d1[voc::rock];
+lea         rdx,[rsp+38h]  
+mov         rcx,qword ptr [std::wcout]  
+call        dak::operator<<
+
+        use_rock(d1);
+lea         rcx,[d1]  
+call        dak::use_rock
+

@@ -54,7 +54,7 @@ namespace dak
 
       //////////////////////////////////////////////////////////////////////////
       //
-      // The actual vocuabulary is kept here, in a namespace to avoid conflicting
+      // The actual vocabulary is kept here, in a namespace to avoid conflicting
       // with other instances using the same words.
 
       const apple_n apple;
